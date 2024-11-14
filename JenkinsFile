@@ -1,45 +1,41 @@
 pipeline{
     agent any
 
-    environmet{
-        NODE_VERIONS = '20.x'
-    }
-
-    tools{
-        nodejs "${NODE_VERISONS}"
-    }
-
     stages{
         stage('Checkout'){
             steps{
-                checkout scs
+                git branch: 'main', url: 'https://github.com/IvanAngelov92/StudentRegistryApp'
             }
         }
 
-        stage("Install dependecies"){
+        stage("Install dependencies"){
             steps{
                 script{
-                    if(isUnix()){
-                        sh 'npm install'
-                    } else {
-                        sh 'npm install'
-                    }
+                        bat 'npm install'
                 }
             }
         }
 
-        stage("Start application and run tests") {
+        stage("Start application and run tests")
+        {
             steps{
                 script{
-                    sh 'npm start'
-                    sh 'wait-on http://localhost:8081'
-                    sh 'npm test'
+                    bat 'start /b npm start'
+                }
+            }
+        }
+
+        stage("run tests")
+        {
+            steps{
+                script{
+                    bat 'npm test'
                 }
             }
         }
     }
 
-    post{
+    post {
         always{
             echo "CI pipeline completed"
         }
