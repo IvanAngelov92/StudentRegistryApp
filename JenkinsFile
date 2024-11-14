@@ -6,7 +6,7 @@ pipeline{
     }
 
     tools{
-        nodejs "${NODE_VERIONS}"
+        nodejs "${NODE_VERISONS}"
     }
 
     stages{
@@ -16,7 +16,7 @@ pipeline{
             }
         }
 
-        stage("Install dependeies"){
+        stage("Install dependecies"){
             steps{
                 script{
                     if(isUnix()){
