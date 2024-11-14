@@ -1,0 +1,47 @@
+pipeline{
+    agent any
+
+    environmet{
+        NODE_VERIONS = '20.x'
+    }
+
+    tools{
+        nodejs "${NODE_VERIONS}"
+    }
+
+    stages{
+        stage('Checkout'){
+            steps{
+                checkout scs
+            }
+        }
+
+        stage("Install dependeies"){
+            steps{
+                script{
+                    if(isUnix()){
+                        sh 'npm install'
+                    } else {
+                        sh 'npm install'
+                    }
+                }
+            }
+        }
+
+        stage("Start application and run tests") {
+            steps{
+                script{
+                    sh 'npm start'
+                    sh 'wait-on http://localhost:8081'
+                    sh 'npm test'
+                }
+            }
+        }
+    }
+
+    post{
+        always{
+            echo "CI pipeline completed"
+        }
+    }
+}
